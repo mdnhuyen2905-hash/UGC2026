@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UEH Green Runner - Giỏ Hàng Không Rác Thải</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #022c22; /* bg-emerald-950 */
+            touch-action: manipulation;
+            user-select: none;
+        }
+        /* Hiệu ứng mượt cho các bảng thông báo */
+        .screen-transition {
+            transition: all 0.3s ease-in-out;
+        }
+        /* Animation nhấp nháy cho Shield */
+        @keyframes shieldPulse {
+            0% { box-shadow: 0 0 10px #38bdf8; }
+            50% { box-shadow: 0 0 25px #0284c7; }
+            100% { box-shadow: 0 0 10px #38bdf8; }
+        }
+        .shield-active {
+            animation: shieldPulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden min-h-screen text-slate-100 flex flex-col items-center justify-center p-2 sm:p-4">
+
+    <!-- KHUNG ĐIỆN THOẠI CHUẨN (MOBILES/TABLETS/PC RESPONSIVE) -->
+    <div class="w-full max-w-md bg-emerald-900/60 rounded-3xl border border-emerald-500/30 shadow-2xl p-4 flex flex-col relative overflow-hidden backdrop-blur-md min-h-[92vh] sm:min-h-[85vh]">
+        
+        <!-- ================= SCREEN 1: MÀN HÌNH CHÀO MỪNG (WELCOME) ================= -->
+        <div id="screen-welcome" class="screen-transition flex flex-col justify-between flex-1">
+            <div class="text-center pt-2">
+                <div class="flex justify-center mb-3">
+                    <span class="text-4xl">🎒</span>
+                    <span class="text-4xl -ml-2">🍱</span>
+                    <span class="text-4xl -ml-2">🧉</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-400 to-emerald-200 uppercase tracking-wide leading-tight">
+                    UEH Green Runner
+                </h1>
+                <p class="text-xs sm:text-sm text-emerald-300/90 font-medium mt-1">Giỏ Hàng Không Rác Thải - SDG 12 & SDG 7</p>
+                <div class="bg-emerald-950/80 rounded-2xl p-3 border border-emerald-500/20 text-left mt-4 text-[11px] sm:text-xs leading-relaxed text-emerald-100">
+                    <span class="font-extrabold text-green-400">💡 LUẬT CHƠI (GAME RULES):</span>
+                    <ul class="list-disc list-inside mt-1.5 space-y-1 text-emerald-200">
+                        <li>Hứng vật phẩm Sống Xanh: 🧉 (Bình giữ nhiệt), 🍱 (Hộp cơm), 🎒 (Túi vải) để <strong class="text-green-300">+10 điểm</strong>.</li>
+                        <li>Tránh rác dùng một lần: 🥤 (Cốc nhựa), 📦 (Hộp xốp), 🛍️ (Bao nilon). Hứng trúng <strong class="text-rose-400">-15 điểm và mất 1 Mạng ❤️</strong>.</li>
+                        <li>Gặp <strong class="text-green-400">Trạm Tri Thức Xanh</strong> (Câu hỏi trắc nghiệm): Trả lời đúng nhận <strong class="text-green-300">+50 điểm</strong>, hồi phục 1 Mạng và nhận <strong class="text-sky-300">Lá Chắn Bảo Vệ 🛡️</strong>. Trả lời sai <strong class="text-rose-400">bị trừ 1 Mạng</strong>.</li>
+                        <li><strong>Mục tiêu:</strong> Vượt qua đủ <strong class="text-green-400">20 câu hỏi trắc nghiệm ngẫu nhiên</strong> để chiến thắng và đồng bộ điểm!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FORM ĐĂNG KÝ THÔNG TIN SINH VIÊN -->
+            <div class="my-4 space-y-2.5">
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-1">Họ và tên sinh viên <span class="text-red-400">*</span></label>
+                    <input type="text" id="input-name" class="w-full bg-emerald-950/90 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-green-400 transition-colors" placeholder="Ví dụ: Nguyễn Văn A">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-1">Mã số sinh viên (MSSV) <span class="text-red-400">*</span></label>
+                        <input type="text" id="input-mssv" class="w-full bg-emerald-950/90 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-green-400 transition-colors" placeholder="Ví dụ: 3122102xxxx">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-1">Lớp / Chi đoàn <span class="text-red-400">*</span></label>
+                        <input type="text" id="input-class" class="w-full bg-emerald-950/90 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-green-400 transition-colors" placeholder="Ví dụ: ADC01">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-1">Link Google Apps Script (Tùy chọn cho Đoàn khoa)</label>
+                    <input type="url" id="input-script-url" class="w-full bg-emerald-950/90 border border-emerald-500/30 rounded-xl px-3 py-1.5 text-[10px] text-emerald-200 focus:outline-none focus:border-green-400 transition-colors" placeholder="Dán link nhận điểm rèn luyện nếu muốn thay đổi">
+                </div>
+            </div>
+
+            <button id="btn-start" class="w-full bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-emerald-950 font-extrabold py-3 rounded-2xl text-sm sm:text-base transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-emerald-950/50">
+                BẮT ĐẦU CHƠI NGAY 🚀
+            </button>
+        </div>
+
+        <!-- ================= SCREEN 2: MÀN CHƠI GAME CHÍNH (PLAYING) ================= -->
+        <div id="screen-game" class="screen-transition hidden flex flex-col flex-1 relative">
+            <!-- HUD DASHBOARD -->
+            <div class="grid grid-cols-4 gap-1 text-center bg-emerald-950/90 p-2 rounded-2xl border border-emerald-500/20 mb-2">
+                <div>
+                    <div class="text-[9px] font-bold text-emerald-400 uppercase">Điểm số</div>
+                    <div id="hud-score" class="text-sm font-extrabold text-white">0</div>
+                </div>
+                <div>
+                    <div class="text-[9px] font-bold text-emerald-400 uppercase">Mạng chơi</div>
+                    <div id="hud-lives" class="text-xs font-bold text-rose-400">❤️❤️❤️</div>
+                </div>
+                <div>
+                    <div class="text-[9px] font-bold text-emerald-400 uppercase">Sống Xanh (SCI)</div>
+                    <div id="hud-sci" class="text-sm font-extrabold text-green-300">50%</div>
+                </div>
+                <div>
+                    <div class="text-[9px] font-bold text-emerald-400 uppercase">Tiến Độ Quiz</div>
+                    <div id="hud-quiz" class="text-sm font-extrabold text-sky-300">0/20</div>
+                </div>
+            </div>
+
+            <!-- LÁ CHẮN & COMBO ALERTS -->
+            <div id="combo-alert" class="absolute top-14 left-1/2 transform -translate-x-1/2 bg-yellow-400/90 text-yellow-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-10 hidden shadow-md uppercase tracking-wider animate-bounce">
+                Combo x2 điểm!
+            </div>
+            
+            <div id="shield-alert" class="absolute top-14 left-4 bg-sky-500/90 text-white text-[9px] font-black px-2 py-0.5 rounded-lg z-10 hidden shadow-md uppercase tracking-wide">
+                Lá chắn hoạt động 🛡️
+            </div>
+
+            <!-- KHU VỰC VẼ CANVAS CHƠI GAME -->
+            <div class="relative flex-1 bg-emerald-950/70 border border-emerald-500/30 rounded-2xl overflow-hidden aspect-[2/3] max-h-[50vh]">
+                <canvas id="game-canvas" class="w-full h-full block bg-emerald-950/40"></canvas>
+                <!-- Lớp phủ sương mù ô nhiễm -->
+                <div id="smog-filter" class="absolute inset-0 bg-gray-900/0 pointer-events-none transition-all duration-500"></div>
+            </div>
+
+            <!-- THANH ĐIỀU KHIỂN CỨU TRỢ TRÊN PC/MOBILE -->
+            <div class="text-center text-[10px] text-emerald-400/80 font-medium py-1">
+                🖥️ Dùng phím mũi tên ← / → hoặc phím A / D | 📱 Vuốt/Chạm để di chuyển giỏ xanh
+            </div>
+        </div>
+
+        <!-- ================= SCREEN 3: TRẠM TRI THỨC (QUIZ POP-UP) ================= -->
+        <div id="screen-quiz" class="screen-transition hidden flex-col justify-between flex-1 bg-emerald-950/95 border-2 border-emerald-400/50 p-4 rounded-3xl absolute inset-4 z-20 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-emerald-500/20 pb-2 mb-3">
+                <span class="text-xs font-black bg-emerald-800 text-emerald-300 rounded-md px-2 py-0.5 uppercase tracking-wider">Trạm Tri Thức SDG 12</span>
+                <span id="current-quiz-index" class="text-xs font-bold text-sky-400">1/20</span>
+            </div>
+
+            <!-- NỘI DUNG CÂU HỎI -->
+            <div class="flex-1 overflow-y-auto pr-1">
+                <p id="quiz-question-text" class="text-xs sm:text-sm font-bold text-white leading-relaxed mb-3">Nội dung câu hỏi...</p>
+                <div id="quiz-options-container" class="space-y-2">
+                    <!-- Nút các đáp án sẽ được chèn tự động -->
+                </div>
+
+                <!-- HỘP THOẠI GIẢI THÍCH (SAU KHI CHỌN ĐÁP ÁN) -->
+                <div id="quiz-explanation-box" class="mt-3 p-3 bg-emerald-900/80 border border-emerald-500/30 rounded-xl text-[11px] leading-relaxed hidden">
+                    <p id="quiz-feedback-title" class="font-bold text-xs uppercase mb-1">Kết quả</p>
+                    <p id="quiz-explanation-text" class="text-emerald-100/90 font-medium">Giải thích nội dung từ tài liệu...</p>
+                </div>
+            </div>
+
+            <!-- NÚT CHUYỂN TIẾP -->
+            <button id="btn-quiz-next" class="w-full bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-black py-2.5 rounded-xl text-xs sm:text-sm transition-colors mt-3 hidden shadow-lg shadow-emerald-950/30">
+                TẬP TRUNG CHẠY TIẾP 🏃‍♂️
+            </button>
+        </div>
+
+        <!-- ================= SCREEN 4: MÀN HÌNH GAME OVER (THUA CUỘC) ================= -->
+        <div id="screen-gameover" class="screen-transition hidden flex flex-col justify-center items-center text-center flex-1 py-4">
+            <span class="text-6xl mb-2">🥀</span>
+            <h2 class="text-2xl font-black text-rose-400 uppercase tracking-wider leading-tight">Môi trường bị hủy hoại!</h2>
+            <p class="text-xs text-emerald-300/80 mt-1 max-w-[80%]">Bạn đã hứng quá nhiều rác nhựa một lần hoặc trả lời sai kiến thức SDG 12.</p>
+            
+            <div class="bg-emerald-950/80 border border-rose-500/20 rounded-2xl p-4 my-5 w-full max-w-[85%] shadow-lg">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-[10px] font-bold text-emerald-400 uppercase">Điểm tích lũy</div>
+                        <div id="gameover-score" class="text-2xl font-black text-white">0</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-emerald-400 uppercase">Chỉ số Sống Xanh</div>
+                        <div id="gameover-sci" class="text-2xl font-black text-rose-400">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="restartGame()" class="w-full max-w-[85%] bg-rose-600 hover:bg-rose-500 text-white font-extrabold py-3 rounded-xl text-sm transition-transform active:scale-95 shadow-lg">
+                THỬ SỨC LẠI NGAY 🔄
+            </button>
+        </div>
+
+        <!-- ================= SCREEN 5: MÀN HÌNH CHIẾN THẮNG (VICTORY) ================= -->
+        <div id="screen-victory" class="screen-transition hidden flex flex-col justify-between flex-1 py-2">
+            <div class="text-center pt-2">
+                <span class="text-5xl block mb-2 animate-bounce">🏆</span>
+                <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-green-400 to-emerald-300 uppercase tracking-widest leading-none">
+                    CÔNG DÂN XANH UEH
+                </h2>
+                <p class="text-[11px] text-emerald-300/90 font-medium mt-1">Chúc mừng bạn đã xuất sắc vượt qua thử thách!</p>
+            </div>
+
+            <div class="bg-emerald-950/80 rounded-2xl p-4 border border-emerald-500/30 my-4 shadow-inner">
+                <!-- THÔNG TIN SINH VIÊN CHUẨN BỊ ĐỒNG BỘ -->
+                <div class="border-b border-emerald-500/20 pb-2.5 mb-2.5 text-center text-xs">
+                    <span id="victory-name" class="font-black text-white text-sm block">Nguyễn Văn A - 312xxxx</span>
+                    <span class="text-emerald-400/80 text-[10px] block mt-0.5">Hệ thống đã chuẩn bị sẵn sàng dữ liệu đồng bộ</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <div class="text-[10px] font-bold text-emerald-400 uppercase">Tổng điểm đạt</div>
+                        <div id="victory-score" class="text-2xl font-black text-yellow-300">0</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-emerald-400 uppercase">Chỉ số Sống Xanh</div>
+                        <div id="victory-sci" class="text-2xl font-black text-green-400">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <button id="btn-sync" class="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-emerald-950 font-black py-3.5 rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] shadow-lg text-sm tracking-wider">
+                    ĐỒNG BỘ ĐIỂM RÈN LUYỆN ⚡
+                </button>
+                <button onclick="restartGame()" class="w-full bg-emerald-950/60 hover:bg-emerald-950/80 text-emerald-300 font-bold py-2 rounded-xl text-xs transition-colors border border-emerald-500/20">
+                    CHƠI LẠI TRẬN MỚI 🔄
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Game -->
+    <script>
+        // ================= NGÂN HÀNG CÂU HỎI ĐÃ PARSE TỪ KHOA HỌC =================
+        const questionBank = [
+  {
+    "question": "Câu 1: Thuật ngữ \"Thế Nhân sinh\" (Anthropocene) bắt nguồn từ tiếng Hy Lạp cổ, nhấn mạnh kỷ nguyên địa chất mới mà loài người có tác động đáng kể và không thể đảo ngược đến hệ sinh thái Trái Đất. Ai là người đã nhấn mạnh và phổ biến thuật ngữ này vào năm 2000? [19, 20]",
+    "options": [
+      "Eugene F. Stoermer.",
+      "Paul J. Crutzen.",
+      "Erle Ellis.",
+      "Bryan Norton."
+    ],
+    "answer": 1,
+    "explain": "Theo tài liệu Chương 2 (TS. Đỗ Kiên Trung), thuật ngữ Thế Nhân sinh (Anthropocene) bắt đầu từ thập niên 1980 bởi Eugene F. Stoermer và được Paul J. Crutzen nhấn mạnh, phổ biến rộng rãi vào năm 2000 để đánh dấu sự kết thúc của kỷ nguyên địa chất Toàn tân (Holocene) do tác động sâu sắc của con người lên Trái Đất [19]."
+  },
+  {
+    "question": "Câu 2: Thuyết \"Con người là trung tâm\" (Anthropocentrism) thể hiện khuynh hướng luận giải sai lầm nào trong đạo đức học môi trường? [20, 21]",
+    "options": [
+      "Xem con người và tự nhiên có giá trị nội tại ngang nhau.",
+      "Tin rằng con người là thực thể trung tâm hoặc quan trọng nhất trên hành tinh, định hình mọi giá trị vật chất và tự nhiên dựa trên góc độ nhu cầu của con người.",
+      "Coi sự sinh tồn của muông thú và các loài phi sinh vật là ưu tiên hàng đầu.",
+      "Tập trung vào việc bảo tồn đa dạng sinh học cho các thế hệ tương lai mà không khai thác tài nguyên."
+    ],
+    "answer": 1,
+    "explain": "Thuyết Con người là trung tâm (Anthropocentrism) là một khuynh hướng luận giải trong đó tin rằng con người là thực thể trung tâm hoặc quan trọng nhất trên hành tinh. Mọi sự vật bên ngoài chỉ được phân tích, đánh giá dựa trên nhu cầu và giá trị mà nó mang lại cho con người [20, 21]."
+  },
+  {
+    "question": "Câu 3: Theo nghiên cứu thực nghiệm năm 2008 về mối quan hệ giữa GDP bình quân đầu người và chất ô nhiễm môi trường, xu hướng nào sau đây là ĐÚNG? [24, 25]",
+    "options": [
+      "Chất ô nhiễm toàn cầu (khí thải CO2) có xu hướng giảm khi thu nhập bình quân đầu người tăng.",
+      "Chất ô nhiễm cục bộ và nhìn thấy được (như nồng độ bụi PM10) có xu hướng tăng liên tục khi thu nhập tăng.",
+      "Chất ô nhiễm cục bộ và nhìn thấy được (PM10) có xu hướng giảm, trong khi chất ô nhiễm toàn cầu (khí thải CO2) có xu hướng tăng khi thu nhập bình quân đầu người tăng.",
+      "Cả PM10 và CO2 đều giảm mạnh khi GDP bình quân đầu người đạt mốc 5.000 USD."
+    ],
+    "answer": 2,
+    "explain": "Số liệu thực nghiệm năm 2008 chỉ ra: (a) Xu hướng giảm các chất ô nhiễm cục bộ và nhìn thấy (nồng độ PM10) trong tương quan với thu nhập bình quân đầu người tăng; (b) Xu hướng tăng các chất ô nhiễm toàn cầu (lượng khí thải CO2) trong tương quan với thu nhập bình quân đầu người tăng [24, 25]."
+  },
+  {
+    "question": "Câu 4: Khẩu hiệu nào dưới đây phản ánh mô hình phát triển kinh tế lãng phí, phi bền vững mà thế giới đang nỗ lực xóa bỏ? [25]",
+    "options": [
+      "\"Reduce, Reuse, Recycle\".",
+      "\"Grow now, Clean up later\" (Tăng trưởng trước, dọn dẹp sau).",
+      "\"Towards No Single-Use Plastics Future\".",
+      "\"Sustainable Consumption and Production\"."
+    ],
+    "answer": 1,
+    "explain": "Tài liệu Chương 2 của TS. Đỗ Kiên Trung chỉ ra khẩu hiệu sai lầm \"Grow now, Clean up later\" (Tăng trưởng trước, dọn dẹp sau) là biểu hiện của mô hình phát triển lãng phí, gây hại nghiêm trọng cho môi trường và cần chuyển dịch sang tăng trưởng xanh toàn diện [25]."
+  },
+  {
+    "question": "Câu 5: Theo định nghĩa của Ngân hàng Thế giới (World Bank) được đề cập trong slide, \"Tăng trưởng xanh\" là gì? [26]",
+    "options": [
+      "Là sự tăng trưởng kinh tế nhanh chóng bỏ qua các yếu tố về xã hội.",
+      "Là tăng trưởng kinh tế kết hợp với các cơ hội xã hội công bằng và chia sẻ thành tựu.",
+      "Là tăng trưởng kinh tế Hiệu quả, Sạch và Có khả năng chống chịu.",
+      "Là mô hình tăng trưởng chỉ tập trung vào việc bảo tồn tự nhiên tuyệt đối, dừng mọi hoạt động sản xuất công nghiệp."
+    ],
+    "answer": 2,
+    "explain": "Theo World Bank (WB), tăng trưởng xanh là tăng trưởng Hiệu quả, Sạch và Có khả năng chống chịu, giúp kết hợp phát triển kinh tế với môi trường sinh thái và bảo tồn tài nguyên [26]."
+  },
+  {
+    "question": "Câu 6: \"Tăng trưởng xanh toàn diện\" (Inclusive Green Growth) được hình thành từ sự kết hợp hài hòa giữa các yếu tố nào? [26, 27]",
+    "options": [
+      "Chỉ gồm tăng trưởng kinh tế và công bằng xã hội.",
+      "Tăng trưởng kinh tế kết hợp với môi trường sinh thái, bảo tồn tài nguyên và các cơ hội xã hội công bằng, phúc lợi, chia sẻ thành tựu.",
+      "Công nghiệp hóa nhanh và gia tăng xuất khẩu nguyên liệu thô.",
+      "Giảm dân số đô thị và tăng diện tích đất lâm nghiệp."
+    ],
+    "answer": 1,
+    "explain": "Tăng trưởng xanh toàn diện là sự giao thoa giữa Tăng trưởng xanh (Hiệu quả, Sạch, Chống chịu) và Tăng trưởng toàn diện (công bằng, phúc lợi, chia sẻ thành tựu), đại diện cho sự kết hợp hài hòa giữa Kinh tế, Xã hội và Môi trường [26, 27]."
+  },
+  {
+    "question": "Câu 7: Theo mô hình phát triển bền vững lồng ghép (Nested Sustainable Development Model) được thể hiện ở slide [27], mối quan hệ giữa ba hệ thống Economy, Society và Biosphere được biểu diễn như thế nào?",
+    "options": [
+      "Ba vòng tròn độc lập không có điểm chung.",
+      "Ba vòng tròn giao nhau tại một điểm trung tâm duy nhất.",
+      "Hệ thống Kinh tế (Economy) là vòng tròn nhỏ nhất, nằm gọn bên trong Xã hội (Society), và Xã hội nằm gọn bên trong Sinh quyển (Biosphere).",
+      "Hệ thống Sinh quyển (Biosphere) nằm trong Kinh tế (Economy)."
+    ],
+    "answer": 2,
+    "explain": "Biểu đồ slide [27] thể hiện rõ mô hình lồng ghép: Economy (Kinh tế) là một bộ phận nằm trong Society (Xã hội), và Society là một bộ phận nằm trong Biosphere (Sinh quyển/Hệ sinh thái). Điều này cho thấy hoạt động kinh tế bị giới hạn bởi các giới hạn vật lý và sinh học của sinh quyển."
+  },
+  {
+    "question": "Câu 8: Trước cuộc Cách mạng Công nghiệp, mối quan hệ giữa con người và tự nhiên chủ yếu ở vị thế nào? [16, 17]",
+    "options": [
+      "Thống trị tự nhiên bằng công nghệ cao.",
+      "Vị thế phụ thuộc hoàn toàn vào các yếu tố tự nhiên như đất, nguồn nước, khí hậu.",
+      "Độc lập hoàn toàn khỏi hệ sinh thái Trái Đất.",
+      "Vị thế chủ động định hình khí hậu toàn cầu."
+    ],
+    "answer": 1,
+    "explain": "Từ thời điểm bắt đầu của câu chuyện tiến hóa, hoạt động lao động sơ khai (săn bắn, hái lượm) và Văn minh Nông nghiệp luôn gắn con người trong vị thế phụ thuộc vào tự nhiên như đất, nguồn nước, khí hậu [16, 17]."
+  },
+  {
+    "question": "Câu 9: Sự kiện lịch sử nào được Erle Ellis (2018) gọi là \"Cuộc cách mạng Copernican thứ nhất\" khi con người bắt đầu xác định lại vị thế thống trị bằng trí tuệ và khai thác thiên nhiên? [17, 18]",
+    "options": [
+      "Cách mạng Công nghiệp.",
+      "Cách mạng Nông nghiệp lúa nước.",
+      "Kỷ nguyên Khai sáng.",
+      "Sự phát minh ra lửa ở thời kỳ đồ đá."
+    ],
+    "answer": 0,
+    "explain": "Con người đã có những bước tiến vượt bậc với Cách mạng Công nghiệp, được Erle Ellis (2018) gọi là \"Cuộc cách mạng Copernican thứ nhất\" khi loài người vươn lên vị trí thống trị và định hình Trái Đất thay vì bị tự nhiên chi phối [17, 18]."
+  },
+  {
+    "question": "Câu 10: Theo slide của TS. Đỗ Kiên Trung, kỉ địa chất Toàn tân (Holocene) được ghi nhận là kết thúc khi xảy ra hiện tượng nào? [19]",
+    "options": [
+      "Dân số thế giới vượt mốc 8 tỷ người vào năm 2022.",
+      "GDP toàn cầu vượt mốc 25 tỷ tỷ USD.",
+      "Tầng ozone bị phá hủy và biến đổi khí hậu gia tăng do hoạt động công nghiệp của con người.",
+      "Sự cạn kiệt hoàn toàn của các nguồn tài nguyên hóa thạch."
+    ],
+    "answer": 2,
+    "explain": "Slide ghi rõ: \"Khi tầng ozone bị phá hủy và biến đổi khí hậu gia tăng tức là kỷ nguyên địa chất Toàn tân (Holocene) đã kết thúc\", mở đầu cho kỷ nguyên Thế Nhân sinh (Anthropocene) [19].\n\n---\n\n### PHẦN 2: TỔNG QUAN VÀ CÁC MỤC TIÊU CHI TIẾT CỦA SDG 12 (10 CÂU)\n*(Nguồn tài liệu: Chương 2 slide TS. Đỗ Kiên Trung & Nghiên cứu mở rộng từ UNEP/UN SDGs)*"
+  },
+  {
+    "question": "Câu 11: Tên gọi chính thức của Mục tiêu Phát triển Bền vững số 12 (SDG 12) của Liên Hợp Quốc là gì? [10, 31]",
+    "options": [
+      "Hành động vì khí hậu (Climate Action).",
+      "Tiêu thụ và sản xuất có trách nhiệm (Responsible Consumption and Production).",
+      "Năng lượng sạch với giá thành hợp lý (Affordable and Clean Energy).",
+      "Các thành phố và cộng đồng bền vững (Sustainable Cities and Communities)."
+    ],
+    "answer": 1,
+    "explain": "SDG 12 có tên gọi chính thức là \"Tiêu thụ và sản xuất có trách nhiệm\" (Ensure sustainable consumption and production patterns) [10, 31]."
+  },
+  {
+    "question": "Câu 12: Bộ Chỉ số SDG 12 của Liên Hợp Quốc bao gồm bao nhiêu mục tiêu cụ thể (targets) và bao nhiêu chỉ số đo lường (indicators)? [31]",
+    "options": [
+      "12 mục tiêu và 14 chỉ số.",
+      "11 mục tiêu và 13 chỉ số.",
+      "10 mục tiêu và 12 chỉ số.",
+      "8 mục tiêu và 10 chỉ số."
+    ],
+    "answer": 0,
+    "explain": "Theo tài liệu slide Chương 2 [31], mục tiêu SDG 12 có tổng cộng 11 mục tiêu cụ thể (targets) và 13 chỉ số (indicators)."
+  },
+  {
+    "question": "Câu 13: Mục tiêu 12.3 của SDG 12 đặt ra cột mốc đến năm 2030 sẽ giảm bao nhiêu lượng rác thải thực phẩm (food waste) bình quân đầu người trên toàn cầu ở cấp độ bán lẻ và tiêu dùng? [31]",
+    "options": [
+      "Giảm 1/3 (Một phần ba).",
+      "Giảm 1/4 (Một phần tư).",
+      "Giảm một nửa (1/2).",
+      "Loại bỏ hoàn toàn (100%)."
+    ],
+    "answer": 2,
+    "explain": "Mục tiêu 12.3 quy định rõ: \"Giảm một nửa lượng rác thải thực phẩm bình quân đầu người trên toàn cầu ở cấp độ bán lẻ và tiêu dùng...\" [31]."
+  },
+  {
+    "question": "Câu 14: Theo Mục tiêu 12.5 của SDG 12, giải pháp chính để giảm đáng kể việc phát sinh chất thải là gì? [31]",
+    "options": [
+      "Tăng cường đốt chất thải ở nhiệt độ cao.",
+      "Phòng ngừa, giảm thiểu, tái chế và tái sử dụng (Prevention, reduction, recycling, reuse).",
+      "Chuyển rác thải sang các quốc gia đang phát triển để xử lý.",
+      "Phát triển các bãi chôn lấp rác hợp vệ sinh quy mô lớn hơn."
+    ],
+    "answer": 1,
+    "explain": "Mục tiêu 12.5 đề xuất giảm đáng kể phát sinh chất thải thông qua các hoạt động ngăn ngừa, giảm thiểu, tái chế và tái sử dụng (quy tắc 3R/4R) [31]."
+  },
+  {
+    "question": "Câu 15: Mục tiêu 12.6 khuyến khích đối tượng nào áp dụng các thực hành bền vững và tích hợp thông tin bền vững vào chu kỳ báo cáo định kỳ của họ? [31]",
+    "options": [
+      "Các tổ chức phi chính phủ (NGOs).",
+      "Các trường đại học công lập.",
+      "Các công ty, đặc biệt là các công ty lớn và đa quốc gia.",
+      "Các hộ gia đình ở khu vực thành thị."
+    ],
+    "answer": 2,
+    "explain": "Mục tiêu 12.6 quy định: \"Khuyến khích các công ty áp dụng các thông lệ bền vững và báo cáo bền vững\", nhằm minh bạch hóa tác động môi trường của doanh nghiệp [31]."
+  },
+  {
+    "question": "Câu 16: Việc thúc đẩy các thực hành mua sắm công bền vững, phù hợp với các chính sách và ưu tiên quốc gia là nội dung của mục tiêu nào thuộc SDG 12? [31]",
+    "options": [
+      "Mục tiêu 12.1.",
+      "Mục tiêu 12.4.",
+      "Mục tiêu 12.7.",
+      "Mục tiêu 12.8."
+    ],
+    "answer": 2,
+    "explain": "Mục tiêu 12.7 của SDG 12 là \"Thúc đẩy thực hành mua sắm công bền vững\" (Promote public procurement practices that are sustainable) [31]."
+  },
+  {
+    "question": "Câu 17: Mục tiêu 12.8 của SDG 12 hướng tới điều gì cho người dân ở khắp mọi nơi vào năm 2030? [31]",
+    "options": [
+      "Đều có việc làm xanh với mức thu nhập cao.",
+      "Đều có hiểu biết phổ quát và nhận thức về lối sống bền vững hài hòa với thiên nhiên.",
+      "Đều được tiếp cận công nghệ năng lượng mặt trời miễn phí.",
+      "Đều tham gia vào các hợp tác xã sản xuất nông nghiệp hữu cơ."
+    ],
+    "answer": 1,
+    "explain": "Mục tiêu 12.8 yêu cầu đảm bảo rằng \"người dân ở khắp mọi nơi có thông tin liên quan và nhận thức về phát triển bền vững và lối sống hài hòa với thiên nhiên\" [31]."
+  },
+  {
+    "question": "Câu 18: Ba mục tiêu bổ sung (phương tiện thực hiện - Means of implementation) của SDG 12 ký hiệu là 12.a, 12.b và 12.c. Trong đó, mục tiêu 12.a tập trung vào việc hỗ trợ đối tượng nào nâng cao năng lực khoa học và công nghệ? [31, 32]",
+    "options": [
+      "Các nước kém phát triển nhất và các đảo quốc nhỏ.",
+      "Các nước đang phát triển (Developing countries).",
+      "Các tập đoàn công nghệ đa quốc gia.",
+      "Các tổ chức nghiên cứu môi trường độc lập."
+    ],
+    "answer": 1,
+    "explain": "Mục tiêu 12.a quy định: \"Hỗ trợ năng lực khoa học và công nghệ của các nước đang phát triển để hướng tới sản xuất và tiêu dùng bền vững hơn\" [31, 32]."
+  },
+  {
+    "question": "Câu 19: Để đo lường sự phát triển bền vững của ngành du lịch và tác động của nó đối với việc tạo việc làm, quảng bá văn hóa địa phương, Liên Hợp Quốc đã đưa ra công cụ giám sát nào trong mục tiêu 12.b? [32]",
+    "options": [
+      "Chỉ số Dấu chân sinh thái của khách du lịch.",
+      "Phát triển và triển khai các công cụ giám sát du lịch bền vững.",
+      "Đánh giá mức độ phát thải carbon của các hãng hàng không du lịch.",
+      "Báo cáo thường niên về doanh thu du lịch sinh thái toàn cầu."
+    ],
+    "answer": 1,
+    "explain": "Mục tiêu 12.b quy định: \"Xây dựng và triển khai các công cụ để giám sát các tác động của phát triển bền vững đối với du lịch bền vững, tạo việc làm và quảng bá văn hóa, sản phẩm địa phương\" [32]."
+  },
+  {
+    "question": "Câu 20: Mục tiêu 12.c yêu cầu loại bỏ các yếu tố nào để ngăn ngừa việc khuyến khích tiêu dùng lãng phí? [32]",
+    "options": [
+      "Loại bỏ thuế nhập khẩu đối với các sản phẩm xanh.",
+      "Loại bỏ những biến dạng thị trường, chẳng hạn như trợ cấp nhiên liệu hóa thạch không hiệu quả.",
+      "Loại bỏ các quy định kiểm dịch động thực vật trong thương mại quốc tế.",
+      "Loại bỏ việc phân phối bao bì nhựa tự hủy sinh học trên thị trường."
+    ],
+    "answer": 1,
+    "explain": "Mục tiêu 12.c nhấn mạnh việc hợp lý hóa các khoản trợ cấp nhiên liệu hóa thạch không hiệu quả bằng cách loại bỏ các biến dạng thị trường khuyến khích tiêu dùng lãng phí [32].\n\n---\n\n### PHẦN 3: RÁC THẢI NHỰA DÙNG MỘT LẦN (LY, HỘP XỐP, BAO BÌ) – TÁC HẠI VÀ GIẢI PHÁP (10 CÂU)\n*(Nguồn tài liệu: Nghiên cứu mở rộng về hạt vi nhựa, ô nhiễm chất dẻo và Quy chuẩn sống xanh)*"
+  },
+  {
+    "question": "Câu 21: Theo nghiên cứu khoa học, một chiếc chai nhựa dùng một lần làm từ nhựa PET trung bình mất khoảng bao lâu để phân hủy hoàn toàn ngoài môi trường tự nhiên?",
+    "options": [
+      "10 đến 50 năm.",
+      "100 đến 200 năm.",
+      "450 đến 1.000 năm.",
+      "Vĩnh viễn không thể phân hủy."
+    ],
+    "answer": 2,
+    "explain": "Các loại nhựa thông dụng như PET dùng làm chai nước ngọt, chai nước suối có cấu trúc mạch polyme rất bền vững, ước tính cần từ 450 đến 1.000 năm để phân hủy vật lý (rã thành vi nhựa) dưới tác động của môi trường."
+  },
+  {
+    "question": "Câu 22: Hộp xốp đựng thức ăn một lần thường được sản xuất từ loại nhựa nào, chứa chất độc hại nào có nguy cơ thôi nhiễm vào thức ăn nóng?",
+    "options": [
+      "Nhựa PE (Polyethylene) - chứa Phthalate.",
+      "Nhựa PS (Polystyrene) - chứa Styrene có nguy cơ gây ung thư.",
+      "Nhựa PP (Polypropylene) - chứa BPA.",
+      "Nhựa PVC (Polyvinyl Chloride) - chứa Clo."
+    ],
+    "answer": 1,
+    "explain": "Hộp xốp đựng thức ăn dùng một lần đa số được làm từ nhựa PS (Polystyrene). Khi đựng thức ăn nóng, dầu mỡ hoặc tính axit cao, chất Styrene và Benzen trong nhựa PS có khả năng bị thôi nhiễm vào thức ăn, gây hại nghiêm trọng cho sức khỏe, đặc biệt là hệ thần kinh và gan."
+  },
+  {
+    "question": "Câu 23: Thuật ngữ \"Hạt vi nhựa\" (Microplastics) dùng để chỉ các mảnh nhựa có kích thước giới hạn nào sau đây?",
+    "options": [
+      "Nhỏ hơn 1 micromet.",
+      "Nhỏ hơn 5 milimét (5mm).",
+      "Nhỏ hơn 1 xentimét (1cm).",
+      "Nhỏ hơn 10 nanomét."
+    ],
+    "answer": 1,
+    "explain": "Theo định nghĩa của NOAA và các tổ chức môi trường quốc tế, hạt vi nhựa là những mảnh nhựa hoặc hạt nhựa có kích thước đường kính nhỏ hơn 5 milimét, phát sinh từ sự phân rã của rác thải nhựa lớn hoặc từ hạt mài trong mỹ phẩm."
+  },
+  {
+    "question": "Câu 24: Khi rác thải nhựa bị chôn lấp chung với rác thải hữu cơ, tác hại nguy hiểm nhất đối với nguồn tài nguyên ngầm là gì?",
+    "options": [
+      "Làm tăng độ ẩm của đất trồng xung quanh.",
+      "Nhựa phân hủy tạo ra khí metan gây cháy nổ bãi rác.",
+      "Các hóa chất phụ gia trong nhựa rò rỉ ra nước rác (nước rỉ rác), thấm xuống đất gây ô nhiễm nguồn nước ngầm.",
+      "Ngăn cản sự phát triển của vi sinh vật kỵ khí tự nhiên."
+    ],
+    "answer": 2,
+    "explain": "Rác thải nhựa chứa rất nhiều chất phụ gia hóa học (chất tạo dẻo, chất ổn định, kim loại nặng). Khi bị chôn lấp lộn xộn, nước rỉ rác mang theo các chất độc này thấm sâu vào lòng đất, hủy hoại hệ sinh thái đất và làm nhiễm độc nguồn nước ngầm sinh hoạt."
+  },
+  {
+    "question": "Câu 25: Giải pháp nào sau đây đứng đầu trong tháp phân cấp quản lý chất thải bền vững (Waste Hierarchy) đối với mặt hàng dùng một lần?",
+    "options": [
+      "Tái chế (Recycle) rác thải nhựa thành sản phẩm mới.",
+      "Đốt rác thu hồi năng lượng (Waste-to-Energy).",
+      "Tiết giảm/Từ chối sử dụng (Reduce/Refuse) các sản phẩm nhựa dùng một lần bằng cách chuyển sang đồ dùng nhiều lần.",
+      "Chôn lấp hợp vệ sinh (Landfill)."
+    ],
+    "answer": 2,
+    "explain": "Tháp quản lý chất thải ưu tiên ngăn ngừa nguồn phát thải trước tiên: Từ chối (Refuse) và Tiết giảm (Reduce) chất thải tại nguồn là phương pháp bền vững và hiệu quả nhất, giảm thiểu tối đa năng lượng và tài nguyên tiêu tốn so với việc xử lý hay tái chế rác ở cuối chuỗi."
+  },
+  {
+    "question": "Câu 26: Tại sao túi nilon tự phân hủy sinh học (Biodegradable bags) chỉ thực sự có lợi cho môi trường khi được xử lý đúng quy trình?",
+    "options": [
+      "Vì chúng cần môi trường ủ công nghiệp (nhiệt độ cao, độ ẩm thích hợp và sự tham gia của vi sinh vật đặc thù) để phân hủy hoàn toàn, nếu vứt bừa bãi ngoài tự nhiên chúng vẫn phân rã thành hạt vi nhựa rất lâu.",
+      "Vì chúng giải phóng lượng khí Oxy quá mức gây mất cân bằng khí quyển.",
+      "Vì chi phí thu gom túi phân hủy sinh học rẻ hơn túi nilon thường.",
+      "Vì chúng tự biến mất hoàn toàn ngay khi tiếp xúc với ánh nắng mặt trời sau 24 giờ."
+    ],
+    "answer": 0,
+    "explain": "Túi phân hủy sinh học đòi hỏi điều kiện ủ công nghiệp đạt chuẩn (nhiệt độ trên 58°C, vi sinh vật hoạt động mạnh) để phân hủy sinh học hoàn toàn thành CO2, nước và sinh khối. Nếu vứt ra môi trường tự nhiên bình thường, chúng phân hủy rất chậm và vẫn gây tác hại tương tự túi nhựa thông thường."
+  },
+  {
+    "question": "Câu 27: Khi sử dụng ly giấy dùng một lần đựng nước uống, lớp phủ chống thấm bên trong ly thường được làm từ chất liệu nào có bản chất là nhựa?",
+    "options": [
+      "Sáp ong thiên nhiên.",
+      "Lớp phủ màng nhựa PE (Polyethylene) mỏng.",
+      "Sợi tinh bột ngô biến tính.",
+      "Đất sét cao lanh."
+    ],
+    "answer": 1,
+    "explain": "Hầu hết các loại ly giấy dùng một lần trên thị trường đều được tráng một lớp nhựa PE mỏng bên trong để chống thấm nước. Lớp PE này khiến ly giấy rất khó phân hủy tự nhiên và gây khó khăn lớn cho quá trình tái chế giấy thông thường vì không thể bóc tách dễ dàng lớp nhựa ra khỏi xơ sợi giấy."
+  },
+  {
+    "question": "Câu 28: Khái niệm \"Kinh tế tuần hoàn\" (Circular Economy) trong sản xuất và tiêu dùng bền vững hướng tới mục tiêu cốt lõi nào?",
+    "options": [
+      "Tăng tốc độ tiêu thụ sản phẩm để thúc đẩy GDP phát triển nhanh hơn.",
+      "Thiết kế sản phẩm để loại bỏ chất thải và ô nhiễm, duy trì vòng đời sử dụng lâu nhất của nguyên vật liệu và tái tạo hệ thống tự nhiên.",
+      "Tập trung vào việc xuất khẩu các sản phẩm lỗi sang thị trường nước thứ ba.",
+      "Thay thế toàn bộ lao động chân tay bằng hệ thống tự động hóa sử dụng năng lượng hóa thạch."
+    ],
+    "answer": 1,
+    "explain": "Kinh tế tuần hoàn đối lập với Kinh tế tuyến tính (Khai thác - Sản xuất - Thải bỏ). Nó dựa trên 3 nguyên tắc chính: loại bỏ chất thải và ô nhiễm từ khâu thiết kế; giữ cho sản phẩm và nguyên liệu được sử dụng lâu nhất có thể; và tái tạo các hệ thống tự nhiên."
+  },
+  {
+    "question": "Câu 29: Hành vi \"Greenwashing\" (Tẩy xanh) trong sản xuất tiêu dùng bền vững được hiểu là gì?",
+    "options": [
+      "Hoạt động làm sạch các bãi rác bằng công nghệ hóa học thân thiện môi trường.",
+      "Việc doanh nghiệp đưa ra các thông tin gây hiểu lầm hoặc chưa được kiểm chứng về tính thân thiện môi trường của sản phẩm/dịch vụ nhằm đánh bóng tên tuổi.",
+      "Việc nhuộm xanh các sản phẩm may mặc bằng màu thực vật tự nhiên.",
+      "Các chương trình hỗ trợ sinh viên trồng cây xanh trong trường học."
+    ],
+    "answer": 1,
+    "explain": "Greenwashing (Tẩy xanh) là thuật ngữ chỉ việc một tổ chức công bố các thông điệp truyền thông phóng đại, không chính xác về nỗ lực bảo vệ môi trường hoặc tính bền vững của sản phẩm nhằm thu hút người tiêu dùng có ý thức sinh thái, trong khi hoạt động thực tế của họ vẫn gây hại cho môi trường."
+  },
+  {
+    "question": "Câu 30: Một sinh viên mang bình nước giữ nhiệt cá nhân để mua cà phê tại quán nước trường thay vì dùng ly nhựa của quán. Hành động này đã trực tiếp cắt giảm lượng phát thải nào trong chuỗi cung ứng sản phẩm?",
+    "options": [
+      "Cắt giảm năng lượng vận hành máy lạnh tại quán nước.",
+      "Giảm dấu chân carbon liên quan đến sản xuất, vận chuyển và xử lý rác thải của một chiếc ly nhựa dùng một lần.",
+      "Tiết kiệm lượng nước sạch dùng để pha chế cà phê.",
+      "Giảm lượng khí thải của xe máy sinh viên khi đến trường."
+    ],
+    "answer": 1,
+    "explain": "Việc sử dụng bình nước cá nhân nhiều lần giúp loại bỏ nhu cầu sản xuất thêm ly nhựa mới, giảm thiểu năng lượng vận chuyển từ nhà máy tới quán nước, và giảm bớt gánh nặng thu gom, xử lý rác thải nhựa ở giai đoạn cuối dòng đời của ly nhựa.\n\n---\n\n### PHẦN 4: ĐỀ ÁN UEH GREEN CAMPUS, CHIẾN DỊCH \"SORT & SUSTAIN\" & QUY TẮC 3R 1A (10 CÂU)\n*(Nguồn tài liệu: Bản tin UEH Green Campus Newsletter & Báo cáo tổng kết Sort & Sustain 2024)*"
+  },
+  {
+    "question": "Câu 31: Chiến dịch \"Tình nguyện viên xanh: Sort & Sustain\" năm 2024 tại UEH được chia làm mấy đợt hoạt động lớn xuyên suốt trong năm? [51, 52, 54, 56]",
+    "options": [
+      "2 đợt.",
+      "3 đợt.",
+      "4 đợt.",
+      "5 đợt."
+    ],
+    "answer": 1,
+    "explain": "Theo báo cáo tổng kết chiến dịch, chuỗi hoạt động \"Tình nguyện viên xanh: Sort & Sustain\" 2024 diễn ra xuyên suốt cả năm và được chia thành ba đợt hoạt động lớn: Đợt 1 (Khởi động - Lan tỏa thông điệp xanh), Đợt 2 (Mở rộng - Hành động thiết thực) và Đợt 3 (Bứt phá - Xây dựng nền tảng bền vững) [51, 52, 54, 56]."
+  },
+  {
+    "question": "Câu 32: Đợt 1 của chiến dịch \"Tình nguyện viên xanh: Sort & Sustain\" diễn ra trong khoảng thời gian nào và ghi nhận bao nhiêu bạn tình nguyện viên nòng cốt tham gia? [52]",
+    "options": [
+      "Từ 08/04 đến 06/06/2024; với 22 tình nguyện viên.",
+      "Từ 15/08 đến 30/09/2024; với 21 tình nguyện viên.",
+      "Từ 18/11 đến 10/12/2024; với 17 tình nguyện viên.",
+      "Từ 01/01 đến 01/03/2024; với 30 tình nguyện viên."
+    ],
+    "answer": 0,
+    "explain": "Đợt 1 (Khởi động - Lan tỏa thông điệp xanh) chính thức triển khai từ ngày 08/04 đến ngày 06/06/2024 với sự tham gia nòng cốt của 22 tình nguyện viên [52]."
+  },
+  {
+    "question": "Câu 33: Tính đến cuối năm 2024, dự án UEH Green Campus đã ghi nhận tổng cộng bao nhiêu lượt sinh viên UEH tiếp cận và thực hành thói quen phân loại rác tại nguồn? [57, 58]",
+    "options": [
+      "Khoảng 2.000 sinh viên.",
+      "Gần 5.000 sinh viên.",
+      "Hơn 10.000 lượt sinh viên.",
+      "Khoảng 50.000 sinh viên."
+    ],
+    "answer": 2,
+    "explain": "Theo báo cáo tổng kết năm 2024, chiến dịch \"Tình nguyện viên xanh: Sort & Sustain\" đã gặt hái thành tựu ấn tượng với hơn 10.000 lượt sinh viên tham gia thực hành lối sống xanh và thói quen phân loại rác đúng cách tại các trạm [57, 58]."
+  },
+  {
+    "question": "Câu 34: Có tổng cộng bao nhiêu \"Trạm thực hành xanh\" (Go Green Station) được duy trì hoạt động ổn định và rải đều ở mấy cơ sở học tập của UEH trong chiến dịch năm 2024? [56, 59]",
+    "options": [
+      "5 trạm rải đều ở 2 cơ sở.",
+      "7 trạm rải đều ở 3 cơ sở.",
+      "10 trạm rải đều ở 4 cơ sở.",
+      "3 trạm đặt tại cơ sở B Nguyễn Tri Phương."
+    ],
+    "answer": 1,
+    "explain": "Hệ thống gồm bảy (07) trạm thực hành xanh rải đều ở ba (03) cơ sở học tập chính của UEH đã hoạt động vô cùng hiệu quả, trở thành điểm đến quen thuộc để sinh viên rèn luyện phân loại rác [56, 59]."
+  },
+  {
+    "question": "Câu 35: Chiến dịch \"Tình nguyện viên xanh: Sort & Sustain\" đã tổ chức bao nhiêu buổi tập huấn (training) để phổ cập nguyên tắc 3R 1A cho người học? [58]",
+    "options": [
+      "1 buổi tập huấn.",
+      "2 buổi tập huấn.",
+      "3 buổi tập huấn.",
+      "5 buổi tập huấn."
+    ],
+    "answer": 2,
+    "explain": "\"Chiến dịch đã mang đến 03 buổi training phổ cập nguyên tắc 3R 1A, giúp nâng cao nhận thức và kỹ năng thực hành lối sống xanh một cách bài bản, thống nhất\" [58]."
+  },
+  {
+    "question": "Câu 36: Nguyên tắc \"3R 1A\" được UEH tích cực phổ biến trong chiến dịch Green Campus bao gồm các hành động cụ thể nào? [58]",
+    "options": [
+      "Reduce (Tiết giảm) - Reuse (Tái sử dụng) - Recycle (Tái chế) - Action (Hành động).",
+      "Refuse (Từ chối) - Replace (Thay thế) - Repair (Sửa chữa) - Awareness (Nhận thức).",
+      "Reduce (Tiết giảm) - Reform (Cải cách) - Rebuild (Tái thiết) - Association (Liên kết).",
+      "Respect (Tôn trọng) - Respond (Phản hồi) - Recover (Phục hồi) - Agreement (Đồng thuận)."
+    ],
+    "answer": 0,
+    "explain": "Nguyên tắc 3R 1A tại UEH là: Reduce (Tiết giảm) - Reuse (Tái sử dụng) - Recycle (Tái chế) - Action (Hành động) [58]."
+  },
+  {
+    "question": "Câu 37: Lễ tổng kết chuỗi hoạt động dành cho người học năm 2024 thuộc dự án UEH Green Campus đã diễn ra trang trọng vào thời gian nào? [50, 62]",
+    "options": [
+      "Chiều tối ngày 10/12/2024.",
+      "Sáng ngày 08/04/2024.",
+      "Chiều tối ngày 06/05/2025.",
+      "Trưa ngày 25/02/2025."
+    ],
+    "answer": 2,
+    "explain": "Báo cáo ghi nhận: \"Chuỗi hoạt động năm 2024 thuộc dự án UEH Green Campus – Chương trình “Tình nguyện viên xanh: Sort & Sustain” đã chính thức khép lại vào chiều tối ngày 06/5/2025\" [50, 62]."
+  },
+  {
+    "question": "Câu 38: Sản phẩm \"UEH Green Campus - Newsletter\" (Bản tin xanh) chính thức được ra mắt vào thời gian nào nhằm làm cầu nối lan tỏa lối sống bền vững trong trường? [3]",
+    "options": [
+      "Tháng 12/2024.",
+      "Tháng 02/2025.",
+      "Tháng 06/2025.",
+      "Tháng 08/2026."
+    ],
+    "answer": 2,
+    "explain": "Theo tin tức chính thức, \"tháng 06/2025, Dự án UEH Green Campus đã chính thức ra mắt sản phẩm UEH Green Campus - Newsletter\" làm cầu nối lan tỏa lối sống bền vững [3]."
+  },
+  {
+    "question": "Câu 40: Minigame Giải ô chữ trực tuyến tương tác trên Bản tin xanh (Newsletter) hàng tháng của UEH diễn ra trong thời hạn bao lâu kể từ ngày phát hành bản tin? [7]",
+    "options": [
+      "3 ngày.",
+      "1 tuần (7 ngày).",
+      "2 tuần.",
+      "Suốt cả tháng cho đến số tiếp theo."
+    ],
+    "answer": 1,
+    "explain": "Minigame Giải ô chữ trực tuyến dựa trên nội dung bản tin xanh có thời gian diễn ra là 1 tuần kể từ ngày phát hành bản tin hằng tháng [7].\n\n---\n\n### PHẦN 5: QUY CHUẨN SỰ KIỆN XANH TẠI UEH & TƯ DUY ĐỊNH LƯỢNG CHO DÂN TOÁN - THỐNG KÊ (10 CÂU)\n*(Nguồn tài liệu: Sơ đồ phân công nhiệm vụ UEH Green Campus & Ứng dụng thực tế)*"
+  },
+  {
+    "question": "Câu 41: Theo Sơ đồ phân công nhiệm vụ thực hành Đại học Xanh UEH, Đoàn - Hội khoa Toán - Thống kê được giao phụ trách phối hợp hành động tại chỉ số nào thuộc SDG 12? [113]",
+    "options": [
+      "Chỉ số 12.2.4 (Thu gom rác thải, đo lường giảm rác chôn lấp).",
+      "Chỉ số 12.2.5 (Tuyên truyền No Single-use Plastic Journey toàn trường).",
+      "Chỉ số 12.2.6 (Tuyên truyền hạn chế mặt hàng dùng một lần; hướng tới tổ chức sự kiện UEH không rác thải dùng một lần).",
+      "Chỉ số 7.4.1 (Tuyên truyền hưởng ứng Giờ Trái Đất)."
+    ],
+    "answer": 2,
+    "explain": "Khoa Toán - Thống kê cùng Khoa Luật được phân công phụ trách chỉ số 12.2.6: triển khai tuyên truyền hạn chế sử dụng ly, hộp xốp, bao bì nhựa dùng một lần tại giảng đường và hướng đến tổ chức các sự kiện hoàn toàn không rác thải dùng một lần của UEH [113]."
+  },
+  {
+    "question": "Câu 42: Khi tổ chức một hội thảo hoặc sự kiện Đoàn - Hội \"Không rác thải dùng một lần\" (Zero-waste Event) theo tiêu chuẩn chỉ số 12.2.6, ban tổ chức khoa Toán - Thống kê cần thực hiện quy chuẩn nào cho khách mời? [113]",
+    "options": [
+      "Phát chai nước suối nhựa 350ml cho mỗi khách mời đặt sẵn trên bàn.",
+      "Sử dụng bình rót nước thủy tinh lớn (hoặc bình nước lọc công cộng) kèm ly thủy tinh, khuyến khích khách mời và sinh viên tự mang bình cá nhân.",
+      "Phát cốc giấy dùng một lần tráng PE để khách uống trà cafe.",
+      "Cung cấp hộp xốp đựng đồ ăn nhẹ để đại biểu dễ mang về."
+    ],
+    "answer": 1,
+    "explain": "Quy chuẩn cốt lõi của sự kiện không rác thải dùng một lần là loại bỏ hoàn toàn các chai nước suối nhựa nhỏ, ly nhựa, ly giấy dùng một lần, thay thế bằng các dụng cụ sử dụng nhiều lần như bình thủy tinh, ly sứ hoặc khuyến khích người tham gia tự mang bình cá nhân [113]."
+  },
+  {
+    "question": "Câu 43: Việc Đoàn - Hội khoa Toán - Thống kê phối hợp tổ chức Game Plinko và vòng xoay may mắn trực tuyến đáp ứng yêu cầu truyền thông nào của Đề án UEH Green Campus? [113]",
+    "options": [
+      "Chuyển đổi số công tác tuyên truyền, lồng ghép giáo dục nâng cao nhận thức lối sống xanh vào các hoạt động trải nghiệm tương tác sáng tạo cho người học.",
+      "Tạo nguồn thu kinh tế từ quảng cáo trên game để tài trợ hoạt động khoa.",
+      "Thay thế hoàn toàn các buổi học chính khóa về bảo vệ môi trường.",
+      "Để thống kê chính xác số lượng rác thải nhựa sinh viên thải ra mỗi ngày."
+    ],
+    "answer": 0,
+    "explain": "Trò chơi trực tuyến sáng tạo giúp sinh viên tiếp cận kiến thức môi trường một cách chủ động, gần gũi, biến các quy định khô khan thành trải nghiệm tương tác thú vị, phù hợp với định hướng giáo dục hiện đại của nhà trường [113]."
+  },
+  {
+    "question": "Câu 44: Hãy phân tích bài toán định lượng sau: Nếu mỗi ngày một sinh viên khoa Toán - Thống kê giảm tiêu thụ 1 chiếc ly nhựa trà sữa dùng một lần (giá trị phát thải tương đương 0.1 kg CO2 trong vòng đời). Khoa có 1.500 sinh viên đồng lòng thực hiện thói quen này liên tục trong 1 học kỳ (15 tuần, mỗi tuần đi học 5 ngày). Tổng lượng khí thải CO2 cắt giảm được của khoa là bao nhiêu?",
+    "options": [
+      "112.5 kg CO2.",
+      "1.125 kg CO2.",
+      "11.250 kg CO2.",
+      "112.500 kg CO2."
+    ],
+    "answer": 2,
+    "explain": "Công thức tính: 1.500 sinh viên x 1 ly/ngày x (15 tuần x 5 ngày/tuần) x 0.1 kg CO2 = 1.500 x 75 x 0.1 = 11.250 kg CO2. Một con số định lượng vô cùng ấn tượng thể hiện sức mạnh của hành động nhỏ được nhân rộng!"
+  },
+  {
+    "question": "Câu 45: Một bưu kiện quà tặng của Đoàn khoa được bọc bằng hộp carton tái chế (băng keo giấy tự hủy) so với bọc bằng màng bọc bong bóng khí nilon và băng keo nhựa. Sự thay đổi này trực tiếp tuân thủ chỉ dẫn nào của SDG 12?",
+    "options": [
+      "Tăng cường mua sắm công của chính phủ.",
+      "Thay thế vật liệu khó phân hủy bằng vật liệu có thể phân hủy sinh học/tái chế dễ dàng trong đóng gói sản phẩm.",
+      "Hạn chế sử dụng điện năng khi đóng gói quà tặng.",
+      "Giảm lượng khí thải độc hại phát ra từ phương tiện vận chuyển quà."
+    ],
+    "answer": 1,
+    "explain": "Thay thế vật liệu đóng gói nhựa (màng xốp bong bóng, băng keo nhựa) bằng vật liệu giấy, carton dễ phân hủy hoặc băng keo xenluloza là một giải pháp tiêu dùng bền vững giúp loại bỏ rác thải nilon khó tái chế."
+  },
+  {
+    "question": "Câu 46: Ban truyền thông khoa Toán - Thống kê thiết kế infographic truyền thông về việc phân loại rác tại nguồn. Công thức xác suất nào thể hiện việc phân loại rác thành công của một sinh viên khi bỏ rác vào đúng thùng rác?",
+    "options": [
+      "Phân loại thành công là biến cố chắc chắn xảy ra mà không cần quan tâm đến nhãn dán trên thùng.",
+      "Phân loại thành công phụ thuộc vào xác suất sinh viên đọc hiểu nhãn dán (A) giao với xác suất sinh viên có ý thức thực hành phân loại (B), tức P(A ∩ B) = P(A) x P(B|A).",
+      "Phân loại thành công là biến cố độc lập hoàn toàn với việc có trạm thực hành xanh hay không.",
+      "Xác suất phân loại rác đúng luôn bằng 100% trong mọi điều kiện học đường."
+    ],
+    "answer": 1,
+    "explain": "Việc phân loại rác đúng đòi hỏi cả hai điều kiện cần và đủ: (A) Hệ thống chỉ dẫn thùng rác trực quan rõ ràng giúp sinh viên nhận diện đúng thùng chứa, và (B) Ý thức tự giác hành động của sinh viên khi tiếp cận trạm thực hành xanh. Do đó, xác suất thành công là tích số của nhận thức và hành động thực tế."
+  },
+  {
+    "question": "Câu 47: Để tổ chức một chiến dịch truyền thông xanh đạt hiệu quả lan tỏa cao, Đoàn khoa Toán - Thống kê thống kê thấy rằng lượng tương tác của bài viết (Y - lượt click) tỷ lệ thuận với số lượng hình ảnh minh họa thực tế về môi trường trường lớp (X) theo phương trình hồi quy tuyến tính Y = 15X + 45. Nếu ban truyền thông đăng tải bài viết kèm theo 5 bức ảnh chụp thực tế các trạm thực hành xanh của UEH, lượng tương tác dự báo nhận được là bao nhiêu lượt click?",
+    "options": [
+      "45 lượt click.",
+      "75 lượt click.",
+      "120 lượt click.",
+      "225 lượt click."
+    ],
+    "answer": 2,
+    "explain": "Thay X = 5 vào phương trình hồi quy: Y = 15 x (5) + 45 = 75 + 45 = 120 lượt click. Phương pháp phân tích định lượng giúp ban truyền thông tối ưu hóa hiệu quả bài đăng trên mạng xã hội!"
+  },
+  {
+    "question": "Câu 48: Trong bối cảnh kinh tế học môi trường, việc thu phí môi trường đối với các cửa hàng bán đồ ăn mang đi sử dụng hộp xốp, ly nhựa dùng một lần xung quanh cơ sở học tập của UEH nhằm mục đích gì?",
+    "options": [
+      "Để tăng ngân sách hoạt động cho Ủy ban nhân dân Phường xã sở tại.",
+      "Nội bộ hóa chi phí ngoại ứng tiêu cực (Negative externality), khiến giá bán phản ánh đúng chi phí hủy hoại môi trường của rác thải nhựa và thúc đẩy người tiêu dùng mang bình đựng cá nhân.",
+      "Ngăn chặn tuyệt đối quyền tự do kinh doanh của các tiểu thương nhỏ lẻ.",
+      "Hỗ trợ kinh phí cho các hoạt động thể thao giải trí của sinh viên trường."
+    ],
+    "answer": 1,
+    "explain": "Rác thải nhựa dùng một lần tạo ra ngoại ứng tiêu cực lớn cho môi trường (chi phí thu gom, xử lý rác, ô nhiễm nguồn nước mà xã hội phải gánh chịu thay cho người mua và người bán). Việc áp thuế hoặc thu phí môi trường giúp đưa các chi phí ẩn này vào giá bán, từ đó điều chỉnh hành vi tiêu dùng bền vững hơn."
+  },
+  {
+    "question": "Câu 49: Thuật ngữ \"Dấu chân Carbon\" (Carbon Footprint) của một sự kiện Đoàn khoa dùng để đo lường điều gì?",
+    "options": [
+      "Diện tích đất trồng cây xanh cần thiết để bù đắp cho sự kiện.",
+      "Tổng lượng khí nhà kính (chủ yếu là CO2) phát thải trực tiếp và gián tiếp từ các hoạt động chuẩn bị, di chuyển, tiêu thụ năng lượng và xử lý rác thải của sự kiện đó.",
+      "Tổng số lượng bước chân của sinh viên tham gia sự kiện đi lại trên giảng đường.",
+      "Số tiền phạt tối đa mà Đoàn khoa phải nộp nếu sự kiện xả rác bừa bãi."
+    ],
+    "answer": 1,
+    "explain": "Dấu chân carbon của sự kiện là tổng hợp tất cả lượng khí thải nhà kính (quy đổi về CO2 tương đương) sinh ra từ việc ban tổ chức và người tham gia di chuyển bằng xe máy/ô tô, sử dụng hệ thống đèn chiếu sáng, điều hòa tại hội trường, in ấn tài liệu giấy, phát sinh rác thải nhựa một lần đựng thức uống,..."
+  },
+  {
+    "question": "Câu 50: Triết lý cốt lõi của hành động Sống Xanh bền vững mà mỗi sinh viên khoa Toán - Thống kê UEH nên ghi nhớ để thực hành hàng ngày là gì?",
+    "options": [
+      "Chờ đợi các công nghệ xử lý rác thải hiện đại hoàn thiện rồi mới bắt đầu hành động bảo vệ môi trường.",
+      "Chỉ cần tham gia các buổi tình nguyện nhặt rác định kỳ là đủ, không cần thay đổi thói quen tiêu dùng cá nhân.",
+      "Nhận thức sâu sắc rằng mọi biến số tiêu dùng nhỏ nhất của bản thân đều đóng góp vào xác suất thay đổi chất lượng môi trường toàn cầu: \"Sống xanh bắt đầu từ hành động tiết giảm ly nhựa, hộp xốp dùng một lần hôm nay\".",
+      "Tẩy chay hoàn toàn mọi sản phẩm công nghiệp và quay về lối sống nông nghiệp sơ khai."
+    ],
+    "answer": 2,
+    "explain": "Sống xanh không phải là một khẩu hiệu to lớn, mà là tập hợp những thói quen nhỏ, bền bỉ được thực hiện đều đặn mỗi ngày bởi hàng ngàn cá nhân. Nhận thức được tác động từ chiếc ly nhựa, hộp xốp mình bỏ dùng hôm nay sẽ tích lũy thành tác động to lớn cho môi trường ngày mai chính là tinh thần cốt lõi của một UEHer có trách nhiệm!"
+  }
+];
+
+        // ================= BIẾN TRẠNG THÁI TOÀN CỤC CỦA GAME =================
+        let gameActive = false;
+        let score = 0;
+        let lives = 3;
+        let sci = 50; // Sustainable Consumption Index (%)
+        let currentQuizIndex = 0;
+        let randomQuizList = []; // Chứa 20 câu hỏi được rút ngẫu nhiên
+        let currentQuestion = null;
+        let hasShield = false;
+        let comboStreak = 0;
+
+        // Lưu thông tin sinh viên chơi game
+        const playerInfo = {
+            name: "",
+            mssv: "",
+            class: "",
+            scriptUrl: ""
+        };
+
+        // Cấu hình vật lý và sinh vật phẩm
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let player, items, particles;
+        let lastSpawnTime = 0;
+        let spawnInterval = 1200; // ms
+        let lastTime = 0;
+        let playTime = 0;
+        let lastQuizTime = 0;
+
+        // Định nghĩa vật phẩm
+        const ITEM_TYPES = [
+            // Vật phẩm có lợi cho môi trường (Sinh quyển, SDG 12)
+            { emoji: '🧉', score: 10, isGreen: true, label: "Bình giữ nhiệt" },
+            { emoji: '🍱', score: 10, isGreen: true, label: "Hộp bã mía" },
+            { emoji: '🎒', score: 10, isGreen: true, label: "Túi canvas" },
+            // Rác thải nhựa hại môi trường
+            { emoji: '🥤', score: -15, isGreen: false, label: "Ly trà sữa nhựa" },
+            { emoji: '📦', score: -15, isGreen: false, label: "Hộp xốp" },
+            { emoji: '🛍️', score: -10, isGreen: false, label: "Bao nilon" }
+        ];
+
+        // Tự động kết xuất âm thanh trực tiếp (Web Audio API - Tự tạo sóng âm)
+        let audioCtx = null;
+        function playSound(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                if (type === 'catch') {
+                    // Tiếng ting vui tai khi hứng đồ xanh
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.15); // C6
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'damage') {
+                    // Tiếng rè khi va chạm rác nhựa
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'correct') {
+                    // Hợp âm chiến thắng khi trả lời đúng
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.25); // A5
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'wrong') {
+                    // Tiếng buzzer khi trả lời sai
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'shield-break') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(150, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }
+            } catch (e) {
+                console.log("Audio not supported or interaction needed first.");
+            }
+        }
+
+        // Thuật toán tráo mảng ngẫu nhiên (Fisher-Yates Shuffle)
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // Gắn sự kiện nút bấm Start
+        document.getElementById('btn-start').addEventListener('click', () => {
+            startGame();
+        });
+
+        // Bắt đầu game chính thức
+        function startGame() {
+            const name = document.getElementById('input-name').value.trim();
+            const mssv = document.getElementById('input-mssv').value.trim();
+            const clazz = document.getElementById('input-class').value.trim();
+            const url = document.getElementById('input-script-url').value.trim();
+
+            if (!name || !mssv || !clazz) {
+                alert("Bạn vui lòng điền đầy đủ các thông tin có dấu * đỏ để tiếp tục nhé!");
+                return;
+            }
+
+            playerInfo.name = name;
+            playerInfo.mssv = mssv;
+            playerInfo.class = clazz;
+            playerInfo.scriptUrl = url || "https://script.google.com/macros/s/AKfycbxo27XFzN2Zf87iXkH_1E8H20u9X_vO_v6ZlXzH-W6zKxS_M0_b_Z9_z6K_f_U-L9-m/exec";
+
+            // Khởi tạo danh sách 20 câu hỏi ngẫu nhiên không lặp
+            randomQuizList = shuffleArray(questionBank).slice(0, 20);
+
+            // Chuyển màn hình giao diện
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+
+            // Thiết lập kích thước thực cho Canvas (để vẽ sắc nét)
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            // Khởi tạo các đối tượng trong thế giới game
+            player = {
+                x: rect.width / 2 - 25,
+                y: rect.height - 45,
+                width: 50,
+                height: 30,
+                speed: 15
+            };
+            items = [];
+            particles = [];
+
+            // Reset chỉ số
+            score = 0;
+            lives = 3;
+            sci = 50;
+            currentQuizIndex = 0;
+            hasShield = false;
+            comboStreak = 0;
+            lastSpawnTime = Date.now();
+            playTime = 0;
+            lastQuizTime = 0;
+
+            gameActive = true;
+            lastTime = performance.now();
+            
+            updateDashboard();
+            requestAnimationFrame(gameLoop);
+            playSound('correct'); // Âm thanh mở đầu
+        }
+
+        // ĐĂNG KÝ HÀNH VI DI CHUYỂN NGƯỜI CHƠI
+        window.addEventListener('keydown', handleKeyDown);
+        canvas.addEventListener('touchmove', handleTouch, { passive: false });
+        canvas.addEventListener('touchstart', handleTouch, { passive: false });
+
+        // Di chuyển bằng bàn phím PC
+        function handleKeyDown(e) {
+            if (!gameActive) return;
+            const rect = canvas.getBoundingClientRect();
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                player.x -= player.speed;
+            } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                player.x += player.speed;
+            }
+            // Ràng buộc biên trái phải
+            if (player.x < 0) player.x = 0;
+            if (player.x > rect.width - player.width) player.x = rect.width - player.width;
+        }
+
+        // Di chuyển bằng cảm ứng điện thoại (Vuốt/Chạm)
+        function handleTouch(e) {
+            if (!gameActive) return;
+            e.preventDefault(); // Ngăn trình duyệt tự động cuộn màn hình
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const touchX = touch.clientX - rect.left;
+            
+            // Đặt trực tiếp tâm giỏ nằm đúng điểm chạm ngón tay của người dùng
+            player.x = touchX - player.width / 2;
+            
+            // Giới hạn biên di chuyển
+            if (player.x < 0) player.x = 0;
+            if (player.x > rect.width - player.width) player.x = rect.width - player.width;
+        }
+
+        // Cập trạng thái hiển thị Dashboard HUD
+        function updateDashboard() {
+            document.getElementById('hud-score').innerText = score;
+            document.getElementById('hud-lives').innerText = '❤️'.repeat(Math.max(0, lives)) || '💀';
+            document.getElementById('hud-sci').innerText = `${sci}%`;
+            document.getElementById('hud-quiz').innerText = `${currentQuizIndex}/20`;
+            
+            // Đặt màu hiển thị cho SCI tùy theo mức độ sống xanh
+            const sciHud = document.getElementById('hud-sci');
+            if (sci >= 80) {
+                sciHud.className = "text-sm font-extrabold text-green-400";
+            } else if (sci >= 50) {
+                sciHud.className = "text-sm font-extrabold text-yellow-300";
+            } else {
+                sciHud.className = "text-sm font-extrabold text-rose-400";
+            }
+
+            // Cập nhật màu lớp phủ sương mù mô phỏng bụi mịn ô nhiễm
+            const smog = document.getElementById('smog-filter');
+            if (sci < 30) {
+                smog.className = "absolute inset-0 bg-gray-900/40 pointer-events-none transition-all duration-500";
+            } else if (sci < 50) {
+                smog.className = "absolute inset-0 bg-gray-900/20 pointer-events-none transition-all duration-500";
+            } else {
+                smog.className = "absolute inset-0 bg-gray-900/0 pointer-events-none transition-all duration-500";
+            }
+
+            // Cập nhật hiển thị Shield chủ động
+            const shieldIndicator = document.getElementById('shield-alert');
+            if (hasShield) {
+                shieldIndicator.classList.remove('hidden');
+                shieldIndicator.classList.add('shield-active');
+            } else {
+                shieldIndicator.classList.add('hidden');
+                shieldIndicator.classList.remove('shield-active');
+            }
+        }
+
+        // VÒNG LẶP CHƠI GAME CHÍNH (GAME LOOP)
+        function gameLoop(timestamp) {
+            if (!gameActive) return;
+
+            const dt = timestamp - lastTime;
+            lastTime = timestamp;
+            playTime += dt;
+
+            const rect = canvas.getBoundingClientRect();
+
+            // Cập nhật vị trí các hạt pháo hoa ăn mừng (nếu có)
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].x += particles[i].vx;
+                particles[i].y += particles[i].vy;
+                particles[i].vy += 0.08; // trọng lực mờ
+                particles[i].alpha -= 0.015;
+                if (particles[i].alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            // Sinh thêm các vật phẩm rơi tự do
+            updateItems(rect);
+
+            // Vẽ toàn bộ thế giới game
+            drawGame(rect);
+
+            // Cơ chế tự động kích hoạt Quiz theo thời gian (mỗi 35 giây nếu hứng không kịp)
+            if (playTime - lastQuizTime > 35000) {
+                lastQuizTime = playTime;
+                triggerQuiz();
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Cập nhật và sinh thêm vật phẩm
+        function updateItems(rect) {
+            const now = Date.now();
+            
+            // Cân bằng tốc độ sinh vật phẩm dựa trên điểm số hiện tại (Tối đa rơi nhanh hơn)
+            const currentSpeed = 3.5 + Math.min(score / 200, 3.5);
+            
+            if (now - lastSpawnTime > spawnInterval) {
+                const typeInfo = shuffleArray(ITEM_TYPES)[0];
+                items.push({
+                    x: Math.random() * (rect.width - 25) + 12,
+                    y: -20,
+                    size: 24,
+                    speed: currentSpeed + Math.random() * 1.2,
+                    info: typeInfo
+                });
+                lastSpawnTime = now;
+            }
+
+            // Di chuyển các vật phẩm rơi xuống dưới
+            for (let i = items.length - 1; i >= 0; i--) {
+                items[i].y += items[i].speed;
+                
+                // Xóa vật phẩm khi trượt khỏi đáy màn hình
+                if (items[i].y > rect.height + 40) {
+                    items.splice(i, 1);
+                    continue;
+                }
+
+                // Thuật toán kiểm tra va chạm (Hứng đồ) - AABB cải tiến
+                const item = items[i];
+                if (item.x > player.x - 10 && item.x < player.x + player.width + 10 &&
+                    item.y + item.size / 2 > player.y && item.y < player.y + player.height) {
+                    
+                    // Xử lý khi va chạm
+                    handleCollision(item);
+                    items.splice(i, 1);
+                }
+            }
+        }
+
+        // Xử lý va chạm vật phẩm
+        function handleCollision(item) {
+            if (item.info.isGreen) {
+                // HỨNG TRÚNG ĐỒ XANH LÀ (🧉, 🍱, 🎒)
+                comboStreak++;
+                let pointsEarned = item.info.score;
+                
+                // Combo nhân hệ số điểm
+                if (comboStreak >= 3) {
+                    pointsEarned *= 2;
+                    const comboIndicator = document.getElementById('combo-alert');
+                    comboIndicator.classList.remove('hidden');
+                    setTimeout(() => comboIndicator.classList.add('hidden'), 1000);
+                }
+
+                score += pointsEarned;
+                sci = Math.min(100, sci + 2);
+                playSound('catch');
+                
+                // Tạo hiệu ứng hạt lấp lánh màu xanh khi bắt được đồ tốt
+                createParticles(item.x, item.y, '#10b981', 8);
+
+                // Cứ hứng được 5 rác tốt là triệu hồi 1 Trạm Tri Thức (Quiz)
+                if (comboStreak % 5 === 0) {
+                    triggerQuiz();
+                }
+            } else {
+                // HỨNG TRÚNG RÁC THẢI DÙNG MỘT LẦN (🥤, 📦, 🛍️)
+                comboStreak = 0; // Reset Combo rèn luyện
+
+                if (hasShield) {
+                    // Phá vỡ Lá chắn thay vì trừ điểm/mạng
+                    hasShield = false;
+                    playSound('shield-break');
+                    createParticles(player.x + player.width/2, player.y, '#38bdf8', 15);
+                } else {
+                    score = Math.max(0, score + item.info.score);
+                    lives--;
+                    sci = Math.max(0, sci - 5);
+                    playSound('damage');
+                    createParticles(item.x, item.y, '#f43f5e', 12);
+                }
+
+                if (lives <= 0) {
+                    endGame(false);
+                }
+            }
+            updateDashboard();
+        }
+
+        // Vẽ tất cả đồ họa lên Canvas
+        function drawGame(rect) {
+            ctx.clearRect(0, 0, rect.width, rect.height);
+
+            // Vẽ vạch sọc nền trường học UEH (Grid mờ)
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.04)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < rect.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, rect.height);
+                ctx.stroke();
+            }
+
+            // Vẽ các hạt lấp lánh (Particles)
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Vẽ các vật phẩm đang rơi bằng Emoji
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                ctx.font = `${item.size}px Inter`;
+                ctx.fillText(item.info.emoji, item.x, item.y);
+                
+                // Hiển thị viền phát sáng nhẹ quanh đồ xanh tốt
+                if (item.info.isGreen) {
+                    ctx.save();
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#10b981';
+                    ctx.strokeStyle = 'rgba(16, 185, 129, 0.2)';
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, item.size / 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+
+            // Vẽ người chơi: Chiếc GIỎ XANH TÁI CHẾ
+            // Vẽ hào quang Lá chắn bảo vệ
+            if (hasShield) {
+                ctx.save();
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#38bdf8';
+                ctx.beginPath();
+                ctx.ellipse(player.x + player.width / 2, player.y + player.height / 2, player.width / 1.5, player.height / 1.3, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Vẽ chiếc giỏ bọc nhựa sinh học bảo vệ môi trường
+            ctx.save();
+            ctx.fillStyle = 'rgba(6, 78, 59, 0.45)'; // emerald-900 mờ
+            ctx.strokeStyle = '#10b981'; // emerald-500
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.roundRect(player.x, player.y, player.width, player.height, [4, 4, 12, 12]);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+
+            // Vẽ Emoji Đại diện Giỏ Rác Xanh ở chính giữa thanh trượt
+            ctx.font = '16px Inter';
+            ctx.fillText('🎒', player.x + player.width / 2, player.y + player.height / 2);
+        }
+
+        // Tạo hiệu ứng hạt vật lý lấp lánh (Sparkles physics)
+        function createParticles(x, y, color, count) {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 1 + Math.random() * 2.5;
+                particles.push({
+                    x: x,
+                    y: y,
+                    radius: 2 + Math.random() * 2.5,
+                    color: color,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1
+                });
+            }
+        }
+
+        // ================= KÍCH HOẠT TRẠM TRI THỨC (POPUP QUIZ) =================
+        function triggerQuiz() {
+            if (!gameActive) return;
+            gameActive = false; // Tạm dừng chuyển động game
+            
+            currentQuestion = randomQuizList[currentQuizIndex];
+            
+            // Hiển thị nội dung
+            document.getElementById('current-quiz-index').innerText = `${currentQuizIndex + 1}/20`;
+            document.getElementById('quiz-question-text').innerHTML = `${currentQuestion.question}`;
+            
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = "";
+
+            const alphabet = ["A", "B", "C", "D"];
+            
+            // Trình bày 4 đáp án dạng nút bấm tuyệt đẹp
+            currentQuestion.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-emerald-900/80 hover:bg-emerald-800 border border-emerald-500/20 text-left p-3 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-3 text-emerald-100 hover:scale-[1.01]";
+                btn.innerHTML = `<span class="bg-emerald-800 text-emerald-300 font-extrabold rounded-md px-1.5 py-0.5 text-[10px] uppercase">${alphabet[idx]}</span> <span class="flex-1">${opt}</span>`;
+                btn.onclick = () => selectAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Ẩn hộp thoại giải thích và nút Tiếp tục
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+            document.getElementById('btn-quiz-next').classList.add('hidden');
+            
+            // Hiển thị màn hình Quiz
+            document.getElementById('screen-quiz').classList.remove('hidden');
+        }
+
+        // Xử lý chọn đáp án trắc nghiệm
+        function selectAnswer(selectedIndex, selectedBtn) {
+            const optionsContainer = document.getElementById('quiz-options-container');
+            const buttons = optionsContainer.getElementsByTagName('button');
+            const isCorrect = (selectedIndex === currentQuestion.answer);
+
+            // Khóa tất cả các nút
+            for (let btn of buttons) {
+                btn.disabled = true;
+                btn.className = "w-full bg-emerald-950/40 border border-emerald-500/10 text-emerald-300/40 p-3 rounded-xl text-xs sm:text-sm font-medium flex items-center gap-3 cursor-not-allowed";
+            }
+
+            const explanationBox = document.getElementById('quiz-explanation-box');
+            const feedbackTitle = document.getElementById('quiz-feedback-title');
+            const explanationText = document.getElementById('quiz-explanation-text');
+            const nextBtn = document.getElementById('btn-quiz-next');
+
+            explanationBox.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+
+            if (isCorrect) {
+                // TRẢ LỜI ĐÚNG (+50đ)
+                score += 50;
+                sci = Math.min(100, sci + 5);
+                hasShield = true; // Kích hoạt khiên chủ động
+                
+                feedbackTitle.innerText = "🎉 CHÍNH XÁC! +50 ĐIỂM";
+                feedbackTitle.className = "font-black text-xs text-green-400 uppercase tracking-wide";
+                selectedBtn.className = "w-full bg-emerald-800/80 border-2 border-green-400 text-white p-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-3";
+                playSound('correct');
+            } else {
+                // TRẢ LỜI SAI (Phạt trừ 1 mạng, trừ SCI)
+                lives--;
+                sci = Math.max(0, sci - 10);
+                
+                feedbackTitle.innerText = `❌ CHƯA CHÍNH XÁC!`;
+                feedbackTitle.className = "font-black text-xs text-rose-400 uppercase tracking-wide";
+                selectedBtn.className = "w-full bg-rose-950/80 border-2 border-rose-500 text-rose-200 p-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-3";
+                
+                // Tô viền xanh cho đáp án đúng để sinh viên học tập kiến thức
+                const correctBtn = buttons[currentQuestion.answer];
+                correctBtn.className = "w-full bg-emerald-900 border-2 border-emerald-400 text-emerald-200 p-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-3";
+                playSound('wrong');
+            }
+
+            explanationText.innerText = currentQuestion.explain;
+            updateDashboard();
+
+            // Nếu trả lời xong mà hết mạng thì kết thúc game ngay
+            if (lives <= 0) {
+                nextBtn.innerText = "XEM KẾT QUẢ 💔";
+                nextBtn.onclick = () => {
+                    document.getElementById('screen-quiz').classList.add('hidden');
+                    endGame(false);
+                };
+            } else {
+                nextBtn.innerText = "TẬP TRUNG CHẠY TIẾP 🏃‍♂️";
+                nextBtn.onclick = () => {
+                    // Tiếp tục cuộc chơi
+                    document.getElementById('screen-quiz').classList.add('hidden');
+                    currentQuizIndex++;
+                    
+                    if (currentQuizIndex >= 20) {
+                        endGame(true); // Thắng cuộc khi hoàn thành 20 câu hỏi
+                    } else {
+                        // Resume game
+                        gameActive = true;
+                        lastTime = performance.now();
+                        lastQuizTime = playTime;
+                        // Xóa sạch vật phẩm cũ rơi dở dang để sinh viên kịp chuẩn bị tâm lý
+                        items = [];
+                    }
+                };
+            }
+        }
+
+        // KẾT THÚC TRÒ CHƠI (END GAME)
+        function endGame(isVictory) {
+            gameActive = false;
+            document.getElementById('screen-game').classList.add('hidden');
+
+            const rect = canvas.getBoundingClientRect();
+
+            if (isVictory) {
+                // TRƯỜNG HỢP CHIẾN THẮNG (VICTORY SCREEN)
+                document.getElementById('screen-victory').classList.remove('hidden');
+                document.getElementById('victory-score').innerText = score;
+                document.getElementById('victory-sci').innerText = `${sci}%`;
+                document.getElementById('victory-name').innerText = `${playerInfo.name} - ${playerInfo.mssv} (${playerInfo.class})`;
+                
+                // Kích hoạt pháo hoa giấy chiến thắng liên tục
+                triggerConfetti(rect);
+
+                // Cấu hình hành động cho nút Đồng bộ
+                const syncBtn = document.getElementById('btn-sync');
+                syncBtn.disabled = false;
+                syncBtn.innerText = "ĐỒNG BỘ ĐIỂM RÈN LUYỆN ⚡";
+                syncBtn.className = "w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-emerald-950 font-extrabold py-3.5 rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] shadow-md text-sm";
+                
+                syncBtn.onclick = () => syncPoints();
+            } else {
+                // TRƯỜNG HỢP THUA CUỘC (GAME OVER SCREEN)
+                document.getElementById('screen-gameover').classList.remove('hidden');
+                document.getElementById('gameover-score').innerText = score;
+                document.getElementById('gameover-sci').innerText = `${sci}%`;
+            }
+        }
+
+        // Chơi lại từ đầu
+        function restartGame() {
+            document.getElementById('screen-victory').classList.add('hidden');
+            document.getElementById('screen-gameover').classList.add('hidden');
+            document.getElementById('screen-welcome').classList.remove('hidden');
+        }
+
+        // ĐỒNG BỘ ĐIỂM VỀ GOOGLE SHEETS QUA APPS SCRIPT
+        function syncPoints() {
+            const syncBtn = document.getElementById('btn-sync');
+            syncBtn.disabled = true;
+            syncBtn.innerText = "Đang truyền dữ liệu...";
+
+            fetch(playerInfo.scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors', // Sử dụng chế độ no-cors để tránh bị chặn liên tên miền (CORS)
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: playerInfo.name,
+                    mssv: playerInfo.mssv,
+                    class: playerInfo.class,
+                    score: score,
+                    correct: `${currentQuizIndex}/20`,
+                    prize: `Chỉ số Sống Xanh đạt ${sci}%`
+                })
+            })
+            .then(() => {
+                alert(`Đồng bộ thành công rực rỡ!\n\nThông tin của sinh viên ${playerInfo.name} đã được ghi nhận trên Google Sheets của Ban tổ chức Đoàn - Hội khoa Toán - Thống kê.`);
+                syncBtn.innerText = "ĐỒNG BỘ THÀNH CÔNG ✔";
+                syncBtn.className = "w-full bg-emerald-800 text-emerald-100 font-extrabold py-3.5 rounded-xl cursor-not-allowed text-sm shadow-inner";
+            })
+            .catch(error => {
+                console.error('Lỗi kết nối API!', error);
+                alert("Đường truyền có chút trục trặc. Bạn hãy chụp lại màn hình kết quả này để BTC ghi nhận thủ công nhé!");
+                syncBtn.disabled = false;
+                syncBtn.innerText = "THỬ ĐỒNG BỘ LẠI";
+            });
+        }
+
+        // Trình kích hoạt pháo hoa giấy chúc mừng khi Thắng (Victory Confetti)
+        function triggerConfetti(rect) {
+            try {
+                const duration = 5 * 1000;
+                const animationEnd = Date.now() + duration;
+                
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+                    
+                    const particleCount = 6;
+                    createParticles(Math.random() * rect.width, 0, shuffleArray(['#f59e0b', '#10b981', '#10b981', '#3b82f6', '#ec4899'])[0], 5);
+                }, 250);
+            } catch(e) {
+                // Fallback nếu có lỗi vẽ confetti ngoài biên
+                console.log(e);
+            }
+        }
+
+    </script>
+</body>
+</html>
